@@ -23,7 +23,7 @@ from utils import create_report
 # ======================================================
 
 st.set_page_config(
-    page_title="Music Genre Classification",
+    page_title="Music Composer Classification",
     page_icon="🎵",
     layout="wide",
     initial_sidebar_state="expanded"
@@ -92,7 +92,7 @@ label_encoder = load_pickle("models/label_encoder.pkl")
 # SIDEBAR
 # ======================================================
 
-st.sidebar.title("🎵 Music Genre Classification")
+st.sidebar.title("🎵 Music Composer Classification")
 
 model_choice = st.sidebar.radio(
 
@@ -125,7 +125,7 @@ st.sidebar.markdown(
 - MIDI
 
 Upload a MIDI file and the model will classify
-its genre.
+its composer.
 """
 )
 
@@ -133,12 +133,12 @@ its genre.
 # TITLE
 # ======================================================
 
-st.title("🎵 Music Genre Classification using Deep Learning")
+st.title("🎵 Music Composer Classification using Deep Learning")
 
 st.write(
 """
 Upload a **MIDI (.mid/.midi)** file and let the trained
-Bidirectional LSTM predict its music genre.
+Bidirectional LSTM predict its music composer.
 """
 )
 
