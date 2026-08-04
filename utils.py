@@ -104,42 +104,44 @@ def preprocess_midi(midi_path, note_to_int):
     return sequence, notes
 
 
+from music21 import converter, tempo, note, chord
+
 def get_midi_statistics(midi_path):
-    """
-    Compute useful MIDI statistics.
-    """
+    midi = converter.parse(midi_path)
 
-    pm = pretty_midi.PrettyMIDI(midi_path)
+    bpm = 120
 
-    tempo = pm.estimate_tempo()
+    tempos = midi.flat.getElementsByClass(tempo.MetronomeMark)
+    if tempos:
+        bpm = tempos[0].number
 
-    duration = pm.get_end_time()
+    notes = midi.flat.notes
 
     total_notes = 0
-
     pitches = []
 
-    instruments = len(pm.instruments)
+    for n in notes:
 
-    for inst in pm.instruments:
+        if isinstance(n, note.Note):
+            total_notes += 1
+            pitches.append(n.pitch.midi)
 
-        total_notes += len(inst.notes)
+        elif isinstance(n, chord.Chord):
+            total_notes += len(n.notes)
 
-        for n in inst.notes:
+            for p in n.pitches:
+                pitches.append(p.midi)
 
-            pitches.append(n.pitch)
-
-    unique_notes = len(set(pitches))
+    duration = float(midi.duration.quarterLength)
 
     return {
-    "tempo": tempo,
-    "duration": duration,
-    "total_notes": total_notes,   # instead of total_notes
-    "unique_notes": unique_notes,
-    "instrument_count": instruments,
-    "pitches": pitches
+        "tempo": bpm,
+        "duration": duration,
+        "total_notes": total_notes,
+        "unique_notes": len(set(pitches)),
+        "instrument_count": len(midi.parts),
+        "pitches": pitches
     }
-
 
 def predict(model,
             midi_path,
