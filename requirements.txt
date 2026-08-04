@@ -1,0 +1,16 @@
+streamlit
+tensorflow
+numpy
+pandas
+music21
+pretty_midi
+plotly
+matplotlib
+scikit-learn
+joblib
+keras
+h5py
+mido
+reportlab
+streamlit-option-menu
+streamlit-extras
